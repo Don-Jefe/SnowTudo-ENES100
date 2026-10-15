@@ -1,4 +1,5 @@
 // Value & constants
+#include </Users/jpheintz/Downloads/ENES100ArduinoLibrary-6.2.4/src/Enes100.h>
 enum dirrections {
     Forward,
     Right,
@@ -39,15 +40,15 @@ const int ECHO = 10, TRIG = 11;
 //const int Force = Analoginput pin;
 
 // Ultra Sonic Sensor
-float GetDistanceToObstacle() {
+// float GetDistanceToObstacle() {
 
-}
-bool ObstacleInFront() {};
+// }
+// bool ObstacleInFront() {};
 
 // WiFi camera positions
 
-float GetXPos() {};
-float GetYPos() {};
+// float GetXPos() {};
+// float GetYPos() {};
 
 
 // Drive train and drive functions
@@ -125,8 +126,35 @@ void DriveDirection(enum dirrections dir) {
 
 void setup() {
 
+    // Overhead Camera Setup
+    // Serial.begin();
+
+
+    // Motor Setup
+    pinMode(LF_IN1, OUTPUT);
+    pinMode(LF_IN2, OUTPUT);
+    pinMode(LR_IN1, OUTPUT);
+    pinMode(LR_IN2, OUTPUT);
+
+    pinMode(RF_IN1, OUTPUT);
+    pinMode(RF_IN2, OUTPUT);
+    pinMode(RR_IN1, OUTPUT);
+    pinMode(RR_IN2, OUTPUT);
+
+    pinMode(TRIG, OUTPUT);
+    pinMode(ECHO, INPUT);
+
+    DriveDirection(Stop);
+
+
+
+    // Wifi Camera setup
+
+    
 }
 
 void loop() {
+
+  DriveDirection(Forward);
     
 }
