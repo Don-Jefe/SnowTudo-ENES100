@@ -1,11 +1,9 @@
 #include "SnowtudoRobot.h"
 
-
 // ---------------- MecanumDrive ----------------
 
 MecanumDrive::MecanumDrive(int lfIn1, int lfIn2, int lrIn1, int lrIn2,
-                           int rfIn1, int rfIn2, int rrIn1, int rrIn2,
-                           int enablePin) : _en(enablePin) {
+                           int rfIn1, int rfIn2, int rrIn1, int rrIn2) {
     _pins[0] = lfIn1; _pins[1] = lfIn2;
     _pins[2] = lrIn1; _pins[3] = lrIn2;
     _pins[4] = rfIn1; _pins[5] = rfIn2;
@@ -16,12 +14,7 @@ void MecanumDrive::begin() {
     for (int i = 0; i < 8; i++) {
         pinMode(_pins[i], OUTPUT);
     }
-    pinMode(_en, OUTPUT);
     stop();
-}
-
-void MecanumDrive::setSpeed(uint8_t pwm) {
-    _speed = pwm;
 }
 
 void MecanumDrive::setMotor(int in1, int in2, int dir) {
@@ -42,10 +35,6 @@ void MecanumDrive::drive(int lf, int lr, int rf, int rr) {
     setMotor(_pins[2], _pins[3], lr);
     setMotor(_pins[4], _pins[5], rf);
     setMotor(_pins[6], _pins[7], rr);
-
-    // One shared enable pin: PWM duty sets the speed of every wheel at once.
-    bool any = (lf != 0) || (lr != 0) || (rf != 0) || (rr != 0);
-    analogWrite(_en, any ? _speed : 0);
 }
 
 void MecanumDrive::move(Direction dir) {
@@ -95,13 +84,10 @@ bool Ultrasonic::obstacleInFront(float thresholdCm) {
     return (d > 0 && d < thresholdCm);
 }
 
-
-// ---------------- ForceSensor ----------------
-
-ForceSensor::ForceSensor(int pin) {
-    _pin = pin;
-}
-
+// ---------------------------------------------------------------------------
+// ForceSensor is disabled for now. Re-enable together with the class in the .h
+// ---------------------------------------------------------------------------
+/*
 void ForceSensor::begin() {
     pinMode(_pin, INPUT);
 }
@@ -114,11 +100,11 @@ float ForceSensor::readNormalized() {
     return readRaw() / 1023.0f;
 }
 
-// Output 1 for light, 2 for medium, 3 for heavy
+// output 1 for light, output 2 for medium, output 3 for heavy
 int ForceSensor::getWeight() {
-    int value = readRaw();
-
-    if (value < 30) return 1;
-    else if (value < 40) return 2;
+    int r = readRaw();
+    if (r < 30) return 1;
+    else if (r < 40) return 2;
     else return 3;
 }
+*/
