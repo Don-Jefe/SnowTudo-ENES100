@@ -87,7 +87,7 @@ bool Ultrasonic::obstacleInFront(float thresholdCm) {
 // ---------------------------------------------------------------------------
 // ForceSensor is disabled for now. Re-enable together with the class in the .h
 // ---------------------------------------------------------------------------
-/*
+
 void ForceSensor::begin() {
     pinMode(_pin, INPUT);
 }
@@ -96,15 +96,23 @@ int ForceSensor::readRaw() {
     return analogRead(_pin);
 }
 
-float ForceSensor::readNormalized() {
-    return readRaw() / 1023.0f;
+float ForceSensor::readAverage() {
+    const int samples=8;
+    long sum =0;
+    for (int i=0; i < samples; i++) {
+        sum += analogRead(_pin);
+        delayMicroseconds(200);
+    }
+    return (int)(sum / samples);
 }
-
+float ForceSensor::readNormalized() {
+    return readAverage() / 1023.0f;
+}
 // output 1 for light, output 2 for medium, output 3 for heavy
 int ForceSensor::getWeight() {
-    int r = readRaw();
-    if (r < 30) return 1;
-    else if (r < 40) return 2;
+    int r = readAverage();
+    if (r < _lightMax) return 1;
+    else if (r < _mediumMax) return 2;
     else return 3;
 }
 */
