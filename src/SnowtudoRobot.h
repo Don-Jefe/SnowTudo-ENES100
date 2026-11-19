@@ -17,24 +17,15 @@ enum class Direction {
 };
 
 // Naming: LF = left front, LR = left rear, RF = right front, RR = right rear
-//
-// All motor drivers share ONE enable pin (default 11, PWM-capable on the UNO).
-// Direction comes from each motor's IN pins; speed is a single PWM value (0-255)
-// applied to every wheel through the shared enable pin.
 class MecanumDrive {
 public:
     MecanumDrive(int lfIn1 = 8, int lfIn2 = 9,
                  int lrIn1 = 6, int lrIn2 = 7,
                  int rfIn1 = 2, int rfIn2 = 3,
-                 int rrIn1 = 4, int rrIn2 = 5,
-                 int enablePin = 11);
+                 int rrIn1 = 4, int rrIn2 = 5);
 
     // Call once in setup(): sets pin modes and stops the motors
     void begin();
-
-    // Shared PWM power for all wheels, 0-255. Applied on the next drive()/move().
-    void setSpeed(uint8_t pwm);
-    uint8_t speed() const { return _speed; }
 
     // dir: 1 = forward, -1 = backward, anything else = stop
     void setMotor(int in1, int in2, int dir);
@@ -48,14 +39,12 @@ public:
 
 private:
     int _pins[8];
-    int _en;
-    uint8_t _speed = 255;
 };
 
 // HC-SR04 style ultrasonic sensor
 class Ultrasonic {
 public:
-    Ultrasonic(int trigPin = A2, int echoPin = A3);
+    Ultrasonic(int trigPin = 11, int echoPin = 10);
 
     void begin();
 
@@ -69,9 +58,13 @@ private:
     int _trig, _echo;
 };
 
+// ---------------------------------------------------------------------------
+// ForceSensor is disabled for now (it had compile errors). Re-enable later.
+// ---------------------------------------------------------------------------
+/*
 class ForceSensor {
 public:
-    ForceSensor(int pin = A0);
+    ForceSensor(int pin = A0) : _pin(pin) {}
 
     void begin();
 
@@ -81,12 +74,12 @@ public:
     // Returns a value between 0.0 and 1.0
     float readNormalized();
 
-    // Output 1 for light, 2 for medium, 3 for heavy
+    // 1 = light, 2 = medium, 3 = heavy
     int getWeight();
 
 private:
     int _pin;
 };
-
+*/
 
 #endif
